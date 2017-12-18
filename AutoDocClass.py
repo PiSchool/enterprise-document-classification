@@ -21,7 +21,9 @@ C={'letter': 0,
    'memo': 15}
 
 # Trial Parameters
-f_method='ahash'
+Nr= 764
+Nc= 764
+f_method='phash'
 n_train=14
 n_val= 5
 c_method='ParForest'
@@ -42,7 +44,16 @@ dataset, nitems= preproc.create_data(df_train, df_test,df_val)
 
 
 # create_training: Get batch of Nb images per class, full resolution
-train_set, y_train, Nr, Nc= preproc.create_sample(dataset, nitems, dataset_path, label='train', Nbatch=n_train)
+train_set, y_train= preproc.create_sample(dataset, nitems, dataset_path, Nr, Nc, label='train', Nbatch=n_train)
+
+#%% Image Test
+import matplotlib.pyplot as plt
+import numpy as np
+
+plt.imshow( np.reshape( train_set[88,:], (Nr,Nc) ), cmap=plt.get_cmap('gray') ),
+plt.colorbar()
+
+plt.show()
 
 #t0= time()
 #%% Feature Extraction
@@ -50,6 +61,20 @@ import features
 
 trfeat_set= features.feat_extr(train_set,Nr,Nc, feat_type=f_method, hash_size=hash_s)
 #del train_set
+
+#%% Image Test
+import matplotlib.pyplot as plt
+import numpy as np
+
+NN= 210
+rN= int( np.sqrt( int((hash_s**2)/4) ) )
+
+f, (ax1, ax2) = plt.subplots(1, 2)
+ax1.imshow( np.reshape( train_set[NN,:], (Nr,Nc) ), cmap=plt.get_cmap('gray'), aspect='auto' ), ax1.set_title("Original Document "+str(Nr)+"x"+str(Nc))
+ax2.imshow( np.reshape( trfeat_set[NN,:rN**2], (rN,rN) ), cmap=plt.get_cmap('gray'), aspect='auto' ), ax2.set_title("Perceptual Hash "+str(rN)+"x"+str(int(rN/2)))
+plt.colorbar()
+
+plt.show()
 
 #%% Learning on training set
 import learning

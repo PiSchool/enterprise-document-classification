@@ -5,7 +5,7 @@ Feature Extraction Module:
 Methods available:
     - PHASH
     - Image tomography
-    - T-SVD (in progress)
+    - T-SVD
     
 		
 
@@ -23,6 +23,7 @@ def feat_extr(test_set, Nr,Nc, feat_type='phash', eigen=5, hash_size=64, nclass=
     import numpy as np
     import sklearn.decomposition as deco 
     import binascii as ba
+    import PIL.Image as Image
     
     # Supported feature extraction methods
     methods= ['phash','ahash','tsvd']
@@ -30,7 +31,7 @@ def feat_extr(test_set, Nr,Nc, feat_type='phash', eigen=5, hash_size=64, nclass=
     # Initialize feature set
     samples= np.shape(test_set)[0]
     if feat_type=='phash' or feat_type=='ahash':
-        feat_set= np.zeros((samples,((hash_size**2)/4) ), dtype=np.uint8)
+        feat_set= np.zeros( ( samples,int((hash_size**2)/4) ), dtype=np.uint8)
     elif feat_type=='tsvd':
         # Define dimension of TSVD feature set and reserve space
         Nb= samples/nclass
@@ -46,15 +47,17 @@ def feat_extr(test_set, Nr,Nc, feat_type='phash', eigen=5, hash_size=64, nclass=
             # Phash case - convert in feature space
             if feat_type=='phash':
                     feat_set[ik,:]= np.fromstring( 
-                            ba.hexlify( bytearray.fromhex( 
-                            imagehash.phash( 
-                                    np.reshape(test_set[ik,:],(Nr,Nc)), 
+                            ba.hexlify(
+                            bytearray.fromhex(
+                            imagehash.phash_simple( 
+                                    Image.frombytes('L',(Nr,Nc),np.reshape(test_set[ik,:],(Nr,Nc)) ), 
                                     hash_size=hash_size ))), dtype=np.uint8)
             elif feat_type=='ahash':
                     feat_set[ik,:]= np.fromstring( 
-                            ba.hexlify( bytearray.fromhex(
+                            ba.hexlify(
+                            bytearray.fromhex(
                             imagehash.average_hash( 
-                                    np.reshape(test_set[ik,:],(Nr,Nc)),
+                                    Image.frombytes('L',(Nr,Nc),np.reshape(test_set[ik,:],(Nr,Nc)) ),
                                     hash_size=hash_size ))), dtype=np.uint8)
             # T-SVD case
             elif feat_type=='tsvd':

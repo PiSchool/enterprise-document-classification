@@ -56,10 +56,8 @@ def create_data(df_train,df_test,df_val):
     
     return dataset, nitems
     
-def create_sample(dataset, nitems, dataset_path, label= 'train',
-            Nbatch= 100,
-            Nr= 512,
-            Nc= 512,):
+def create_sample(dataset, nitems, dataset_path, Nr, Nc, label= 'train',
+            Nbatch= 100):
     """
     Generate actual image or text sample from data filenames
     """
@@ -90,20 +88,25 @@ def create_sample(dataset, nitems, dataset_path, label= 'train',
             y[ik]= C[c]
             ik+=1
     
-    return dset, y, Nr, Nc
+    return dset, y
 
 def prepare(img, Nr=512, Nc=512):
     """
     Prepare the image for further preprocessing.
     Preparation steps:
         - Histogram equalization
+        - Normalization
         - Resizing to (512x512) with cubic spline interpolation
     """
+
+    # Thresholding
+    img_tr, th= thresholding(img)    
     
     # Convert to float and rescale img
     img= np.double(img)/np.max(np.double(img))
+    
     # Resizing with nearest-neighbour interpolation to retain amplitude dynamic
-    img_n= cv2.resize(img, (Nr,Nc), interpolation=cv2.INTER_AREA)
+    img_n= cv2.resize(img_tr, (Nr,Nc), interpolation=cv2.INTER_AREA)
     
     return img_n
 
