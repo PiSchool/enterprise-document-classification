@@ -7,9 +7,9 @@ The model has been tested on the RVL-CDIP dataset, which is available at: http:/
 
 To install the required libraries (tested on Ubuntu 17.11) run:
 
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
+- python3 -m venv venv
+- source venv/bin/activate
+- pip install -r requirements.txt
 
 ## Classify documents
 
@@ -26,8 +26,8 @@ Set the model parameters in AutoDocClass.py and run the script
 
 
 In progress:
-    - Main file callable from the terminal with tunable model parameters
-    - Callable model "export to disk" function 
+- Main file callable from the terminal with tunable model parameters
+- Callable model "export to disk" function 
 
 
 # Author
