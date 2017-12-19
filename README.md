@@ -1,4 +1,5 @@
 # document-classification
+<<<<<<< HEAD
 Automatic Document Classification based on Image Analysis
 
 This is a model for identifying the document type in an automated way (e.g. email, scientific publication, memo, etc).
@@ -29,3 +30,11 @@ Set the model parameters in AutoDocClass.py and run the script
 In progress:
     - Main file callable from the terminal with tunable model parameters
     - Callable model "export to disk" function 
+=======
+
+# Author
+
+This project was developed by [Roberto Calandrini](https://github.com/robical) during [Pi School's AI programme](http://picampus-school.com/programme/school-of-ai/) in Fall 2017.
+
+![photo of Roberto Calandrini](http://picampus-school.com/wp-content/uploads/2017/11/IMG_2064-2-150x150.jpg)
+>>>>>>> origin/master
